@@ -58,12 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 CircularButton(
                   backgroundColor: Colors.green,
                   icon: Icons.image,
-                  isActive: true,
                   altIcon: Text(
                     "a",
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),
+                  isActive: state.isTextActive,
+                  onTap: () => bloc.toggleText(),
                 ),
                 SizedBox(width: 8),
                 CircularButton(

@@ -33,4 +33,13 @@ class CardsCubit extends Cubit<CardsState> {
     newCards[state.currentIndex] = newCard;
     emit(state.copyWith(cards: newCards));
   }
+
+  void toggleText() {
+    var newCard = state.cards[state.currentIndex]
+        .copyWith(showText: !state.cards[state.currentIndex].showText);
+    List<CardModel> newCards = [];
+    newCards.addAll(state.cards);
+    newCards[state.currentIndex] = newCard;
+    emit(state.copyWith(cards: newCards));
+  }
 }
