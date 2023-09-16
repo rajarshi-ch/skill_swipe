@@ -46,6 +46,7 @@ class _SkillCardState extends State<SkillCard> {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.all(8),
+        clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
+import 'package:skill_swipe/ui/screens/home/components/circular_button.dart';
 import 'package:skill_swipe/ui/screens/home/components/skill_card.dart';
 import 'package:skill_swipe/ui/widgets/card_option_button.dart';
 
@@ -38,13 +39,63 @@ class _MyHomePageState extends State<MyHomePage> {
         final bloc = BlocProvider.of<CardsCubit>(context);
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Row(children: [
-              CircleAvatar(
-                backgroundColor: Colors.green,
-                child: IconButton(onPressed: () {}, icon: Text("A")),
-              )
-            ]),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularButton(
+                  backgroundColor: Colors.green,
+                  icon: Icons.image,
+                  altIcon: Text(
+                    "A",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  isActive: true,
+                ),
+                SizedBox(width: 8),
+                CircularButton(
+                  backgroundColor: Colors.green,
+                  icon: Icons.image,
+                  isActive: true,
+                  altIcon: Text(
+                    "a",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 8),
+                CircularButton(
+                  backgroundColor: Colors.green,
+                  icon: Icons.image,
+                  isActive: true,
+                ),
+                SizedBox(width: 8),
+                CircularButton(
+                  backgroundColor: Colors.grey,
+                  icon: Icons.west,
+                  isActive: true,
+                ),
+                SizedBox(width: 8),
+                CircularButton(
+                  backgroundColor: Colors.grey,
+                  icon: Icons.east,
+                  isActive: true,
+                ),
+                SizedBox(width: 8),
+                CircularButton(
+                  backgroundColor: Colors.grey,
+                  icon: Icons.copy,
+                  isActive: true,
+                ),
+                SizedBox(width: 8), // Add spacing between buttons
+                CircularButton(
+                  backgroundColor: Colors.red,
+                  icon: Icons.delete,
+                  isActive: true,
+                ),
+              ],
+            ),
             centerTitle: true,
           ),
           resizeToAvoidBottomInset: false,
@@ -62,14 +113,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    FloatingActionButton(
-                      onPressed: () {
+                    // FloatingActionButton(
+                    //   onPressed: () {
+                    //     bloc.previousCard();
+                    //   },
+                    //   hoverElevation: 0,
+                    //   elevation: 0,
+                    //   tooltip: 'Previous Card',
+                    //   child: const Icon(Icons.chevron_left),
+                    // ),
+                    CircularButton(
+                      backgroundColor: Colors.grey,
+                      icon: Icons.chevron_left,
+                      onTap: () {
                         bloc.previousCard();
                       },
-                      hoverElevation: 0,
-                      elevation: 0,
-                      tooltip: 'Previous Card',
-                      child: const Icon(Icons.chevron_left),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8),
@@ -77,15 +135,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         "${state.cards.isEmpty ? 0 : state.currentIndex + 1} / ${state.cards.length}",
                       ),
                     ),
-                    FloatingActionButton(
-                      onPressed: () {
+                    CircularButton(
+                      backgroundColor: Colors.grey,
+                      icon: Icons.chevron_right,
+                      onTap: () {
                         bloc.nextCard();
                       },
-                      hoverElevation: 0,
-                      elevation: 0,
-                      tooltip: 'Next Card',
-                      child: const Icon(Icons.chevron_right),
                     ),
+                    // FloatingActionButton(
+                    //   onPressed: () {
+                    //     bloc.nextCard();
+                    //   },
+                    //   hoverElevation: 0,
+                    //   elevation: 0,
+                    //   tooltip: 'Next Card',
+                    //   child: const Icon(Icons.chevron_right),
+                    // ),
                     Spacer(),
                     FloatingActionButton(
                       onPressed: () {
