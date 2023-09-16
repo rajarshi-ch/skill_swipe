@@ -1,11 +1,46 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:skill_swipe/models/card_model.dart';
 import 'package:skill_swipe/ui/common/text_styles.dart';
+import 'package:skill_swipe/ui/screens/home/components/drag_handler.dart';
 import 'package:skill_swipe/ui/screens/home/components/rich_text_editor.dart';
 
-class SkillCard extends StatelessWidget {
+class SkillCard extends StatefulWidget {
   const SkillCard({super.key, required this.card});
   final CardModel card;
+
+  @override
+  State<SkillCard> createState() => _SkillCardState();
+}
+
+class _SkillCardState extends State<SkillCard> {
+  double dividerPosition = 0.5;
+
+  Widget TextComponent() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "Title",
+              border: InputBorder.none,
+              hintStyle: kTitleHintTextStyle,
+            ),
+            style: kTitleTextStyle,
+            minLines: 1,
+            maxLines: 10,
+            controller: widget.card.titleController,
+          ),
+          MyTextEditor(
+            card: widget.card,
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -27,27 +62,59 @@ class SkillCard extends StatelessWidget {
             width: 1.0, // Border width
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Title",
-                  border: InputBorder.none,
-                  hintStyle: kTitleHintTextStyle,
+        child: Stack(
+          children: [
+            Column(
+              children: <Widget>[
+                Expanded(
+                  flex: (dividerPosition * 100).toInt(),
+                  child: Container(
+                    child: TextComponent(),
+                  ),
                 ),
-                style: kTitleTextStyle,
-                minLines: 1,
-                maxLines: 10,
-                controller: card.titleController,
-              ),
-              MyTextEditor(
-                card: card,
-              ),
-            ],
-          ),
+                DragHandler(),
+                Expanded(
+                  flex: ((1 - dividerPosition) * 100).toInt(),
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Text('Bottom Container'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Expanded(
+                  flex: (dividerPosition * 100).toInt(),
+                  child: SizedBox(),
+                ),
+                GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    log(name: "Dragged handler", details.toString());
+                    setState(() {
+                      double newPosition = dividerPosition +
+                          details.delta.dy / context.size!.height;
+                      dividerPosition = newPosition.clamp(
+                          0.1, 0.9); // Adjust min and max position as needed
+
+                      log(
+                          name: "New divider position",
+                          dividerPosition.toString());
+                    });
+                  },
+                  child: Container(
+                    height: 30.0, // Height of the divider handler
+                    color: Colors.transparent,
+                  ),
+                ),
+                Expanded(
+                    flex: ((1 - dividerPosition) * 100).toInt(),
+                    child: SizedBox()),
+              ],
+            ),
+          ],
         ),
       ),
     );
