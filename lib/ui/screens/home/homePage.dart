@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ]),
             centerTitle: true,
           ),
+          resizeToAvoidBottomInset: false,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -67,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       hoverElevation: 0,
                       elevation: 0,
-                      tooltip: 'Increment',
+                      tooltip: 'Previous Card',
                       child: const Icon(Icons.chevron_left),
                     ),
                     Padding(
@@ -78,11 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     FloatingActionButton(
                       onPressed: () {
-                        bloc.previousCard();
+                        bloc.nextCard();
                       },
                       hoverElevation: 0,
                       elevation: 0,
-                      tooltip: 'Increment',
+                      tooltip: 'Next Card',
                       child: const Icon(Icons.chevron_right),
                     ),
                     Spacer(),
@@ -94,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       hoverElevation: 0,
                       elevation: 0,
-                      tooltip: 'Increment',
+                      tooltip: 'Add a new card',
                       child: const Icon(Icons.add),
                     )
                   ],
