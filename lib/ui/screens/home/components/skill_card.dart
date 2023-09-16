@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:skill_swipe/models/card_model.dart';
-import 'package:skill_swipe/ui/common/text_styles.dart';
+import 'package:skill_swipe/app/text_styles.dart';
 import 'package:skill_swipe/ui/screens/home/components/drag_handler.dart';
 import 'package:skill_swipe/ui/screens/home/components/rich_text_editor.dart';
 
