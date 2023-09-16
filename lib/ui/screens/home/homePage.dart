@@ -51,7 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-                  isActive: true,
+                  isActive: state.isTitleActive,
+                  onTap: () => bloc.toggleTitle(),
                 ),
                 SizedBox(width: 8),
                 CircularButton(

@@ -21,6 +21,8 @@ class CardsState extends Equatable {
     );
   }
 
+  bool get isTitleActive =>
+      cards.isNotEmpty ? cards[currentIndex].showTitle : false;
   @override
   List<Object?> get props => [status, cards, error, currentIndex];
 

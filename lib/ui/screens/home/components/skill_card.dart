@@ -22,20 +22,22 @@ class _SkillCardState extends State<SkillCard> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextFormField(
-            decoration: InputDecoration(
-              hintText: "Title",
-              border: InputBorder.none,
-              hintStyle: kTitleHintTextStyle,
+          if (widget.card.showTitle)
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "Title",
+                border: InputBorder.none,
+                hintStyle: kTitleHintTextStyle,
+              ),
+              style: kTitleTextStyle,
+              minLines: 1,
+              maxLines: 10,
+              controller: widget.card.titleController,
             ),
-            style: kTitleTextStyle,
-            minLines: 1,
-            maxLines: 10,
-            controller: widget.card.titleController,
-          ),
-          MyTextEditor(
-            card: widget.card,
-          ),
+          if (widget.card.showText)
+            MyTextEditor(
+              card: widget.card,
+            ),
         ],
       ),
     );
