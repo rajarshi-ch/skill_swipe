@@ -14,6 +14,7 @@ class DragHandler extends StatelessWidget {
       child: Stack(clipBehavior: Clip.none, children: [
         Container(
           height: lineHeight,
+          width: size.width - 18,
           color: Colors.black,
         ),
         Positioned(

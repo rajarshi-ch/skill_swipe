@@ -72,14 +72,31 @@ class _SkillCardState extends State<SkillCard> {
                     child: TextComponent(),
                   ),
                 ),
-                DragHandler(),
                 Expanded(
                   flex: ((1 - dividerPosition) * 100).toInt(),
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Center(
-                      child: Text('Bottom Container'),
-                    ),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: dividerPosition > 0.65
+                                ? BoxFit.fitWidth
+                                : BoxFit.fitHeight,
+                            image:
+                                NetworkImage("https://picsum.photos/300/200"),
+                          ),
+                        ),
+                        // child: Image.network(
+                        //   "https://picsum.photos/300/200",
+                        //   fit: BoxFit.fitHeight,
+                        // ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        child: DragHandler(),
+                      )
+                    ],
                   ),
                 ),
               ],
@@ -92,21 +109,17 @@ class _SkillCardState extends State<SkillCard> {
                 ),
                 GestureDetector(
                   onVerticalDragUpdate: (details) {
-                    log(name: "Dragged handler", details.toString());
                     setState(() {
                       double newPosition = dividerPosition +
                           details.delta.dy / context.size!.height;
                       dividerPosition = newPosition.clamp(
                           0.1, 0.9); // Adjust min and max position as needed
-
-                      log(
-                          name: "New divider position",
-                          dividerPosition.toString());
                     });
                   },
                   child: Container(
                     height: 30.0, // Height of the divider handler
                     color: Colors.transparent,
+                    alignment: Alignment.center,
                   ),
                 ),
                 Expanded(
