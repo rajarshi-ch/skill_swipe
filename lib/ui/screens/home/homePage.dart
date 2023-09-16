@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CardsCubit, CardsState>(
       builder: (context, state) {
+        final bloc = BlocProvider.of<CardsCubit>(context);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -49,14 +50,56 @@ class _MyHomePageState extends State<MyHomePage> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SkillCard(),
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                'hoho',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+              state.cards.isNotEmpty
+                  ? SkillCard(card: state.cards[state.currentIndex])
+                  : Expanded(
+                      child: Center(
+                      child: Text("Add your first card !"),
+                    )),
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        bloc.previousCard();
+                      },
+                      hoverElevation: 0,
+                      elevation: 0,
+                      tooltip: 'Increment',
+                      child: const Icon(Icons.chevron_left),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        "${state.cards.isEmpty ? 0 : state.currentIndex + 1} / ${state.cards.length}",
+                      ),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        bloc.previousCard();
+                      },
+                      hoverElevation: 0,
+                      elevation: 0,
+                      tooltip: 'Increment',
+                      child: const Icon(Icons.chevron_right),
+                    ),
+                    Spacer(),
+                    FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          showoptions = !showoptions;
+                        });
+                      },
+                      hoverElevation: 0,
+                      elevation: 0,
+                      tooltip: 'Increment',
+                      child: const Icon(Icons.add),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
           floatingActionButton: Column(
@@ -73,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         icon: Icons.subject,
                         title: "Card",
                         onTap: () {
-                          BlocProvider.of<CardsCubit>(context).addCard();
+                          bloc.addCard();
                           closeOptions();
                         },
                       ),
@@ -94,15 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ]),
                   ),
-                FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      showoptions = !showoptions;
-                    });
-                  },
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                )
               ]), // This trailing comma makes auto-formatting nicer for build methods.
         );
       },

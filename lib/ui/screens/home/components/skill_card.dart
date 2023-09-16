@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:skill_swipe/models/card_model.dart';
 import 'package:skill_swipe/ui/common/text_styles.dart';
 import 'package:skill_swipe/ui/screens/home/components/rich_text_editor.dart';
 
 class SkillCard extends StatelessWidget {
-  const SkillCard({super.key});
-
+  const SkillCard({super.key, required this.card});
+  final CardModel card;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -40,8 +41,11 @@ class SkillCard extends StatelessWidget {
                 style: kTitleTextStyle,
                 minLines: 1,
                 maxLines: 10,
+                controller: card.titleController,
               ),
-              Expanded(child: MyTextEditor()),
+              MyTextEditor(
+                card: card,
+              ),
             ],
           ),
         ),

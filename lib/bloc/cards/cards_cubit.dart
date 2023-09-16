@@ -9,6 +9,19 @@ class CardsCubit extends Cubit<CardsState> {
   CardsCubit() : super(CardsState.initial());
 
   void addCard() {
-    emit(state.copyWith(cards: state.cards + [CardModel()]));
+    emit(state.copyWith(
+        cards: state.cards + [CardModel(cardType: CardType.card)]));
+  }
+
+  void nextCard() {
+    if (state.currentIndex < state.cards.length - 1) {
+      emit(state.copyWith(currentIndex: state.currentIndex + 1));
+    }
+  }
+
+  void previousCard() {
+    if (state.currentIndex > 0) {
+      emit(state.copyWith(currentIndex: state.currentIndex - 1));
+    }
   }
 }
