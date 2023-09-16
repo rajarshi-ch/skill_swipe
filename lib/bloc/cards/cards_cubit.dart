@@ -7,4 +7,8 @@ part 'cards_state.dart';
 
 class CardsCubit extends Cubit<CardsState> {
   CardsCubit() : super(CardsState.initial());
+
+  void addCard() {
+    emit(state.copyWith(cards: state.cards + [CardModel()]));
+  }
 }
