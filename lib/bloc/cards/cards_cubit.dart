@@ -12,14 +12,31 @@ class CardsCubit extends Cubit<CardsState> {
   CardsCubit() : super(CardsState.initial());
 
   void addCard() {
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         cards: state.cards +
             [
               CardModel(
                 cardType: CardType.card,
                 imageOptions: ImageOptions(),
               )
-            ]));
+            ],
+      ),
+    );
+  }
+
+  void addVideoCard(String videoId) {
+    emit(state.copyWith(
+      cards: state.cards +
+          [
+            CardModel(
+              cardType: CardType.video,
+              videoId: videoId,
+              showText: false,
+              showTitle: false,
+            )
+          ],
+    ));
   }
 
   String generateNewRandomPictureUrl() {

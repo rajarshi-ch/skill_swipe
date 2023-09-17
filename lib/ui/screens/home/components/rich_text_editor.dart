@@ -6,8 +6,9 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:skill_swipe/models/card_model.dart';
 
 class MyTextEditor extends StatefulWidget {
-  const MyTextEditor({super.key, required this.card});
+  const MyTextEditor({super.key, required this.card, this.readOnly = false});
   final CardModel card;
+  final bool readOnly;
   @override
   _MyTextEditorState createState() => _MyTextEditorState();
 }
@@ -24,7 +25,7 @@ class _MyTextEditorState extends State<MyTextEditor> {
       children: [
         quill.QuillEditor(
             controller: widget.card.textController,
-            readOnly: false,
+            readOnly: widget.readOnly,
             focusNode: FocusNode(),
             scrollController: ScrollController(),
             scrollable: true,
@@ -34,32 +35,7 @@ class _MyTextEditorState extends State<MyTextEditor> {
             placeholder: "Text",
             // textSelectionControls:
             //     CustomTextSelectionControls(controller: _controller),
-            contextMenuBuilder: (context, rawEditorState) => Stack(
-                  children: [
-                    Positioned(
-                      top: rawEditorState.contextMenuAnchors.primaryAnchor.dy,
-                      left: rawEditorState.contextMenuAnchors.primaryAnchor.dx,
-                      child: Container(
-                          height: 50,
-                          child: Row(
-                            children: [
-                              quill.ToggleStyleButton(
-                                attribute: quill.Attribute.bold,
-                                icon: Icons.format_bold,
-                                iconSize: 18,
-                                controller: widget.card.textController,
-                              ),
-                              quill.ToggleStyleButton(
-                                attribute: quill.Attribute.italic,
-                                icon: Icons.format_italic,
-                                iconSize: 18,
-                                controller: widget.card.textController,
-                              ),
-                            ],
-                          )),
-                    ),
-                  ],
-                )
+            contextMenuBuilder: (context, rawEditorState) => SizedBox()
             // true for view only mode
             ),
       ],

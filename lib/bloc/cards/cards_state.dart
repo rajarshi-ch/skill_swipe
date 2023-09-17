@@ -29,6 +29,11 @@ class CardsState extends Equatable {
   bool get isImagePresent => cards.isNotEmpty
       ? cards[currentIndex].imageOptions.selectedImage != null
       : false;
+
+  CardModel? get currentCard =>
+      cards.isNotEmpty && currentIndex >= 0 && currentIndex < cards.length
+          ? cards[currentIndex]
+          : null;
   @override
   List<Object?> get props => [status, cards, error, currentIndex];
 

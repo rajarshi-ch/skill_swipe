@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
+import 'package:skill_swipe/ui/screens/home/components/add_video_id.dart';
 import 'package:skill_swipe/ui/widgets/card_option_button.dart';
 
 class AddCardModal extends StatelessWidget {
@@ -34,7 +35,9 @@ class AddCardModal extends StatelessWidget {
           CardOptionButton(
             icon: Icons.videocam_outlined,
             title: "Video",
-            onTap: () => {},
+            onTap: () {
+              showAddYoutubeVideoModal(context);
+            },
           ),
           SizedBox(
             height: 8,

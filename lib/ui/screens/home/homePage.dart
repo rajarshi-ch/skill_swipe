@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skill_swipe/app/enums.dart';
 import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
-import 'package:skill_swipe/models/image_options.dart';
 import 'package:skill_swipe/ui/screens/home/components/add_card_modal.dart';
+import 'package:skill_swipe/ui/screens/home/components/card_renderer.dart';
 import 'package:skill_swipe/ui/screens/home/components/circular_button.dart';
 import 'package:skill_swipe/ui/screens/home/components/image_options_modal.dart';
-import 'package:skill_swipe/ui/screens/home/components/skill_card.dart';
+import 'package:skill_swipe/ui/screens/preview/preview_screen.dart';
 import 'package:skill_swipe/ui/widgets/card_option_button.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -46,44 +47,47 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                CircularButton(
-                  backgroundColor: Colors.green,
-                  icon: Icons.image,
-                  altIcon: Text(
-                    "A",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                if (state.currentCard != null &&
+                    state.currentCard!.cardType == CardType.card) ...[
+                  CircularButton(
+                    backgroundColor: Colors.green,
+                    icon: Icons.image,
+                    altIcon: Text(
+                      "A",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    isActive: state.isTitleActive,
+                    onTap: () => bloc.toggleTitle(),
                   ),
-                  isActive: state.isTitleActive,
-                  onTap: () => bloc.toggleTitle(),
-                ),
-                SizedBox(width: 8),
-                CircularButton(
-                  backgroundColor: Colors.green,
-                  icon: Icons.image,
-                  altIcon: Text(
-                    "a",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                  SizedBox(width: 8),
+                  CircularButton(
+                    backgroundColor: Colors.green,
+                    icon: Icons.image,
+                    altIcon: Text(
+                      "a",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    isActive: state.isTextActive,
+                    onTap: () => bloc.toggleText(),
                   ),
-                  isActive: state.isTextActive,
-                  onTap: () => bloc.toggleText(),
-                ),
-                SizedBox(width: 8),
-                CircularButton(
-                  backgroundColor: Colors.green,
-                  icon: Icons.image,
-                  isActive: state.isImagePresent,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ImageOptionsModal();
-                      },
-                    );
-                  },
-                ),
-                SizedBox(width: 8),
+                  SizedBox(width: 8),
+                  CircularButton(
+                    backgroundColor: Colors.green,
+                    icon: Icons.image,
+                    isActive: state.isImagePresent,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ImageOptionsModal();
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8),
+                ],
                 CircularButton(
                   backgroundColor: Colors.grey,
                   icon: Icons.west,
@@ -112,80 +116,90 @@ class _MyHomePageState extends State<MyHomePage> {
             centerTitle: true,
           ),
           resizeToAvoidBottomInset: false,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              state.cards.isNotEmpty
-                  ? SkillCard(card: state.cards[state.currentIndex])
-                  : Expanded(
-                      child: Center(
-                      child: Text("Add your first card !"),
-                    )),
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    // FloatingActionButton(
-                    //   onPressed: () {
-                    //     bloc.previousCard();
-                    //   },
-                    //   hoverElevation: 0,
-                    //   elevation: 0,
-                    //   tooltip: 'Previous Card',
-                    //   child: const Icon(Icons.chevron_left),
-                    // ),
-                    CircularButton(
-                      backgroundColor: Colors.grey,
-                      icon: Icons.chevron_left,
-                      onTap: () {
-                        bloc.previousCard();
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        "${state.cards.isEmpty ? 0 : state.currentIndex + 1} / ${state.cards.length}",
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                state.cards.isNotEmpty
+                    ? CardRenderer(card: state.cards[state.currentIndex])
+                    : Expanded(
+                        child: Center(
+                        child: Text("Add your first card !"),
+                      )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      // FloatingActionButton(
+                      //   onPressed: () {
+                      //     bloc.previousCard();
+                      //   },
+                      //   hoverElevation: 0,
+                      //   elevation: 0,
+                      //   tooltip: 'Previous Card',
+                      //   child: const Icon(Icons.chevron_left),
+                      // ),
+                      CircularButton(
+                        backgroundColor: Colors.grey,
+                        icon: Icons.chevron_left,
+                        onTap: () {
+                          bloc.previousCard();
+                        },
                       ),
-                    ),
-                    CircularButton(
-                      backgroundColor: Colors.grey,
-                      icon: Icons.chevron_right,
-                      onTap: () {
-                        bloc.nextCard();
-                      },
-                    ),
-                    // FloatingActionButton(
-                    //   onPressed: () {
-                    //     bloc.nextCard();
-                    //   },
-                    //   hoverElevation: 0,
-                    //   elevation: 0,
-                    //   tooltip: 'Next Card',
-                    //   child: const Icon(Icons.chevron_right),
-                    // ),
-                    Spacer(),
-                    FloatingActionButton(
-                      onPressed: () {
-                        // setState(() {
-                        //   showoptions = !showoptions;
-                        // });
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AddCardModal();
-                          },
-                        );
-                      },
-                      hoverElevation: 0,
-                      elevation: 0,
-                      tooltip: 'Add a new card',
-                      child: const Icon(Icons.add),
-                    )
-                  ],
-                ),
-              )
-            ],
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          "${state.cards.isEmpty ? 0 : state.currentIndex + 1} / ${state.cards.length}",
+                        ),
+                      ),
+                      CircularButton(
+                        backgroundColor: Colors.grey,
+                        icon: Icons.chevron_right,
+                        onTap: () {
+                          bloc.nextCard();
+                        },
+                      ),
+                      // FloatingActionButton(
+                      //   onPressed: () {
+                      //     bloc.nextCard();
+                      //   },
+                      //   hoverElevation: 0,
+                      //   elevation: 0,
+                      //   tooltip: 'Next Card',
+                      //   child: const Icon(Icons.chevron_right),
+                      // ),
+                      Spacer(),
+
+                      FloatingActionButton(
+                        onPressed: () {
+                          // setState(() {
+                          //   showoptions = !showoptions;
+                          // });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AddCardModal();
+                            },
+                          );
+                        },
+                        hoverElevation: 0,
+                        elevation: 0,
+                        tooltip: 'Add a new card',
+                        child: const Icon(Icons.add),
+                      ),
+                      Spacer(),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      GradientButton(
+                        isActive: state.cards.isNotEmpty,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
           floatingActionButton: Column(
               mainAxisSize: MainAxisSize.min,
@@ -225,6 +239,49 @@ class _MyHomePageState extends State<MyHomePage> {
               ]), // This trailing comma makes auto-formatting nicer for build methods.
         );
       },
+    );
+  }
+}
+
+class GradientButton extends StatelessWidget {
+  final bool isActive;
+
+  const GradientButton({super.key, required this.isActive});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (isActive) Navigator.of(context).push(StoryScreen.route());
+      },
+      child: Container(
+        height: 50,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          gradient: isActive
+              ? LinearGradient(
+                  colors: [
+                    Colors.blue,
+                    Colors.green
+                  ], // Replace with your gradient colors
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          color: isActive ? null : Colors.grey,
+          borderRadius:
+              BorderRadius.circular(25), // Adjust corner radius as needed
+        ),
+        child: Center(
+          child: Text(
+            'Preview',
+            style: TextStyle(
+              color: Colors.white, // Text color
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
