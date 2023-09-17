@@ -4,7 +4,10 @@ import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
 import 'package:skill_swipe/ui/screens/home/homePage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BlocProvider(
+      create: (context) =>
+          CardsCubit(), //NOTE : In production, would use dependancy injection with <get_it>
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,11 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider(
-        create: (context) =>
-            CardsCubit(), //NOTE : In production, would use dependancy injection with <get_it>
-        child: const MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

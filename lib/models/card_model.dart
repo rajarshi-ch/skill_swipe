@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:skill_swipe/app/enums.dart';
@@ -11,9 +10,11 @@ class CardModel {
   final bool showText;
   late ImageOptions imageOptions;
   final CardType cardType;
+  final String? videoId;
 
   CardModel(
       {this.showTitle = true,
+      this.videoId,
       this.showText = true,
       TextEditingController? titleController,
       QuillController? textController,
@@ -31,8 +32,10 @@ class CardModel {
     bool? showText,
     ImageOptions? imageOptions,
     CardType? cardType,
+    String? videoId,
   }) {
     return CardModel(
+      videoId: videoId ?? this.videoId,
       titleController: titleController ?? this.titleController,
       textController: textController ?? this.textController,
       showTitle: showTitle ?? this.showTitle,
