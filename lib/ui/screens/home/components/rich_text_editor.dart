@@ -35,7 +35,7 @@ class _MyTextEditorState extends State<MyTextEditor> {
             placeholder: "Text",
             // textSelectionControls:
             //     CustomTextSelectionControls(controller: _controller),
-            contextMenuBuilder: (context, rawEditorState) => widget.readOnly
+            contextMenuBuilder: (context, rawEditorState) => !widget.readOnly
                 ? Stack(
                     children: [
                       Positioned(
