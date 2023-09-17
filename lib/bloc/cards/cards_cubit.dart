@@ -61,6 +61,37 @@ class CardsCubit extends Cubit<CardsState> {
     }
   }
 
+  void deleteCard() {
+    List<CardModel> newCards = [];
+    newCards.addAll(state.cards);
+    newCards.removeAt(state.currentIndex);
+    emit(state.copyWith(cards: newCards, currentIndex: 0));
+  }
+
+  void moveLeft() {
+    if (state.currentIndex != 0) {
+      List<CardModel> newCards = [];
+      newCards.addAll(state.cards);
+      var tmpCard = newCards[state.currentIndex];
+      newCards[state.currentIndex] = newCards[state.currentIndex - 1];
+      newCards[state.currentIndex - 1] = tmpCard;
+      emit(state.copyWith(
+          cards: newCards, currentIndex: state.currentIndex - 1));
+    }
+  }
+
+  void moveRight() {
+    if (state.currentIndex < state.cards.length - 1) {
+      List<CardModel> newCards = [];
+      newCards.addAll(state.cards);
+      var tmpCard = newCards[state.currentIndex];
+      newCards[state.currentIndex] = newCards[state.currentIndex + 1];
+      newCards[state.currentIndex + 1] = tmpCard;
+      emit(state.copyWith(
+          cards: newCards, currentIndex: state.currentIndex + 1));
+    }
+  }
+
   void toggleTitle() {
     var newCard = state.cards[state.currentIndex]
         .copyWith(showTitle: !state.cards[state.currentIndex].showTitle);

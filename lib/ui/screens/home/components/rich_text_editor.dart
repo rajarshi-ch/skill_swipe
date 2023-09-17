@@ -35,7 +35,35 @@ class _MyTextEditorState extends State<MyTextEditor> {
             placeholder: "Text",
             // textSelectionControls:
             //     CustomTextSelectionControls(controller: _controller),
-            contextMenuBuilder: (context, rawEditorState) => SizedBox()
+            contextMenuBuilder: (context, rawEditorState) => widget.readOnly
+                ? Stack(
+                    children: [
+                      Positioned(
+                        top: rawEditorState.contextMenuAnchors.primaryAnchor.dy,
+                        left:
+                            rawEditorState.contextMenuAnchors.primaryAnchor.dx,
+                        child: Container(
+                            height: 50,
+                            child: Row(
+                              children: [
+                                quill.ToggleStyleButton(
+                                  attribute: quill.Attribute.bold,
+                                  icon: Icons.format_bold,
+                                  iconSize: 18,
+                                  controller: widget.card.textController,
+                                ),
+                                quill.ToggleStyleButton(
+                                  attribute: quill.Attribute.italic,
+                                  icon: Icons.format_italic,
+                                  iconSize: 18,
+                                  controller: widget.card.textController,
+                                ),
+                              ],
+                            )),
+                      ),
+                    ],
+                  )
+                : SizedBox()
             // true for view only mode
             ),
       ],

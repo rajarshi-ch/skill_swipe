@@ -5,6 +5,7 @@ import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
 import 'package:skill_swipe/ui/screens/home/components/add_card_modal.dart';
 import 'package:skill_swipe/ui/screens/home/components/card_renderer.dart';
 import 'package:skill_swipe/ui/screens/home/components/circular_button.dart';
+import 'package:skill_swipe/ui/screens/home/components/delete_confirmation.dart';
 import 'package:skill_swipe/ui/screens/home/components/image_options_modal.dart';
 import 'package:skill_swipe/ui/screens/preview/preview_screen.dart';
 import 'package:skill_swipe/ui/widgets/card_option_button.dart';
@@ -88,29 +89,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(width: 8),
                 ],
-                CircularButton(
-                  backgroundColor: Colors.grey,
-                  icon: Icons.west,
-                  isActive: true,
-                ),
-                SizedBox(width: 8),
-                CircularButton(
-                  backgroundColor: Colors.grey,
-                  icon: Icons.east,
-                  isActive: true,
-                ),
-                SizedBox(width: 8),
-                CircularButton(
-                  backgroundColor: Colors.grey,
-                  icon: Icons.copy,
-                  isActive: true,
-                ),
-                SizedBox(width: 8), // Add spacing between buttons
-                CircularButton(
-                  backgroundColor: Colors.red,
-                  icon: Icons.delete,
-                  isActive: true,
-                ),
+                if (state.cards.isNotEmpty) ...[
+                  CircularButton(
+                    backgroundColor: Colors.grey,
+                    icon: Icons.west,
+                    isActive: true,
+                    onTap: bloc.moveLeft,
+                  ),
+                  SizedBox(width: 8),
+                  CircularButton(
+                    backgroundColor: Colors.grey,
+                    icon: Icons.east,
+                    isActive: true,
+                    onTap: bloc.moveRight,
+                  ),
+                  SizedBox(width: 8),
+                  CircularButton(
+                    backgroundColor: Colors.grey,
+                    icon: Icons.copy,
+                    isActive: true,
+                  ),
+                  SizedBox(width: 8), // Add spacing between buttons
+                  CircularButton(
+                    backgroundColor: Colors.red,
+                    icon: Icons.delete,
+                    isActive: true,
+                    onTap: () => showConfirmDeleteModal(
+                        context: context,
+                        onDelete: () => bloc.deleteCard(),
+                        text: "Are you sure you want to delete this card ?"),
+                  ),
+                ]
               ],
             ),
             centerTitle: true,

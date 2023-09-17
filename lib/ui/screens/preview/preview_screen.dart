@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
 import 'package:skill_swipe/models/card_model.dart';
-import 'package:skill_swipe/ui/screens/home/components/card_renderer.dart';
 import 'package:skill_swipe/ui/screens/preview/components/preview_card_renderer.dart';
 
 class StoryScreen extends StatefulWidget {
