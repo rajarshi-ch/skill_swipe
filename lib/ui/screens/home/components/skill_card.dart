@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:skill_swipe/app/enums.dart';
 import 'package:skill_swipe/models/card_model.dart';
 import 'package:skill_swipe/app/text_styles.dart';
 import 'package:skill_swipe/ui/screens/home/components/drag_handler.dart';
@@ -43,8 +44,32 @@ class _SkillCardState extends State<SkillCard> {
     );
   }
 
+  Widget ImageComponent() {
+    final imageAlignment = widget.card.imageOptions.imageAlignment;
+    bool condition = false;
+    if (imageAlignment == ImageAlignmentOption.top) {
+      condition = dividerPosition < 0.35;
+    } else if (imageAlignment == ImageAlignmentOption.bottom) {
+      condition = dividerPosition > 0.65;
+    }
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: condition ? BoxFit.fitWidth : BoxFit.fitHeight,
+          image: NetworkImage(widget.card.imageOptions.selectedImage!),
+        ),
+      ),
+      // child: Image.network(
+      //   "https://picsum.photos/300/200",
+      //   fit: BoxFit.fitHeight,
+      // ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final imageAlignment = widget.card.imageOptions.imageAlignment;
+    final currentImage = widget.card.imageOptions.selectedImage;
     return Expanded(
       child: Container(
         margin: const EdgeInsets.all(8),
@@ -58,6 +83,14 @@ class _SkillCardState extends State<SkillCard> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
+          image: widget.card.imageOptions.imageAlignment ==
+                      ImageAlignmentOption.fullscreen &&
+                  widget.card.imageOptions.selectedImage != null
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(widget.card.imageOptions.selectedImage!),
+                )
+              : null,
           borderRadius:
               BorderRadius.circular(20.0), // Adjust the radius as needed
           border: Border.all(
@@ -65,73 +98,70 @@ class _SkillCardState extends State<SkillCard> {
             width: 1.0, // Border width
           ),
         ),
-        child: Stack(
-          children: [
-            Column(
-              children: <Widget>[
-                Expanded(
-                  flex: (dividerPosition * 100).toInt(),
-                  child: Container(
-                    child: TextComponent(),
-                  ),
+        child: (currentImage == null ||
+                imageAlignment == ImageAlignmentOption.fullscreen)
+            ? Expanded(
+                child: Container(
+                  child: TextComponent(),
                 ),
-                Expanded(
-                  flex: ((1 - dividerPosition) * 100).toInt(),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: dividerPosition > 0.65
-                                ? BoxFit.fitWidth
-                                : BoxFit.fitHeight,
-                            image:
-                                NetworkImage("https://picsum.photos/300/200"),
-                          ),
+              )
+            : Stack(
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: (dividerPosition * 100).toInt(),
+                        child: Container(
+                          child: imageAlignment == ImageAlignmentOption.top
+                              ? ImageComponent()
+                              : TextComponent(),
                         ),
-                        // child: Image.network(
-                        //   "https://picsum.photos/300/200",
-                        //   fit: BoxFit.fitHeight,
-                        // ),
                       ),
-                      Positioned(
-                        top: 0,
-                        child: DragHandler(),
-                      )
+                      Expanded(
+                        flex: ((1 - dividerPosition) * 100).toInt(),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            imageAlignment == ImageAlignmentOption.bottom
+                                ? ImageComponent()
+                                : TextComponent(),
+                            Positioned(
+                              top: 0,
+                              child: DragHandler(),
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Expanded(
-                  flex: (dividerPosition * 100).toInt(),
-                  child: SizedBox(),
-                ),
-                GestureDetector(
-                  onVerticalDragUpdate: (details) {
-                    setState(() {
-                      double newPosition = dividerPosition +
-                          details.delta.dy / context.size!.height;
-                      dividerPosition = newPosition.clamp(
-                          0.1, 0.9); // Adjust min and max position as needed
-                    });
-                  },
-                  child: Container(
-                    height: 30.0, // Height of the divider handler
-                    color: Colors.transparent,
-                    alignment: Alignment.center,
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: (dividerPosition * 100).toInt(),
+                        child: SizedBox(),
+                      ),
+                      GestureDetector(
+                        onVerticalDragUpdate: (details) {
+                          setState(() {
+                            double newPosition = dividerPosition +
+                                details.delta.dy / context.size!.height;
+                            dividerPosition = newPosition.clamp(0.1,
+                                0.9); // Adjust min and max position as needed
+                          });
+                        },
+                        child: Container(
+                          height: 30.0, // Height of the divider handler
+                          color: Colors.transparent,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                      Expanded(
+                          flex: ((1 - dividerPosition) * 100).toInt(),
+                          child: SizedBox()),
+                    ],
                   ),
-                ),
-                Expanded(
-                    flex: ((1 - dividerPosition) * 100).toInt(),
-                    child: SizedBox()),
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }

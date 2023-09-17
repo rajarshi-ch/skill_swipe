@@ -5,19 +5,19 @@ class CardOptionButton extends StatelessWidget {
       {super.key,
       required this.icon,
       required this.onTap,
-      required this.title});
+      required this.title,
+      this.color});
   final IconData icon;
   final VoidCallback onTap;
   final String title;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80,
         height: 37,
         padding: const EdgeInsets.all(10),
-        margin: EdgeInsets.only(bottom: 8),
         decoration: ShapeDecoration(
           color: Color(0xFFF7F8F9),
           shape: RoundedRectangleBorder(
@@ -26,20 +26,22 @@ class CardOptionButton extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: Colors.grey,
+              color: color ?? Colors.grey,
               size: 18,
+            ),
+            SizedBox(
+              width: 10,
             ),
             Text(
               title,
-              textAlign: TextAlign.right,
               style: TextStyle(
-                color: Color(0xFF242323),
+                color: color ?? Color(0xFF242323),
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
                 height: 0,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_swipe/bloc/cards/cards_cubit.dart';
+import 'package:skill_swipe/models/image_options.dart';
+import 'package:skill_swipe/ui/screens/home/components/add_card_modal.dart';
 import 'package:skill_swipe/ui/screens/home/components/circular_button.dart';
+import 'package:skill_swipe/ui/screens/home/components/image_options_modal.dart';
 import 'package:skill_swipe/ui/screens/home/components/skill_card.dart';
 import 'package:skill_swipe/ui/widgets/card_option_button.dart';
 
@@ -70,7 +73,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 CircularButton(
                   backgroundColor: Colors.green,
                   icon: Icons.image,
-                  isActive: true,
+                  isActive: state.isImagePresent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ImageOptionsModal();
+                      },
+                    );
+                  },
                 ),
                 SizedBox(width: 8),
                 CircularButton(
@@ -156,9 +167,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     Spacer(),
                     FloatingActionButton(
                       onPressed: () {
-                        setState(() {
-                          showoptions = !showoptions;
-                        });
+                        // setState(() {
+                        //   showoptions = !showoptions;
+                        // });
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AddCardModal();
+                          },
+                        );
                       },
                       hoverElevation: 0,
                       elevation: 0,
